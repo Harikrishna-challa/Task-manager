@@ -1,8 +1,10 @@
 import axios from "axios";
 
-// Create an Axios instance with default base URL
+const baseURL =proccess.env.BACKEND_URL
+
+// Create an Axios instance with default base UR
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api", // Make sure it's baseURL
+  baseURL:baseURL, // Make sure it's baseURL
   withCredentials: true, //  Send cookies or Authorization headers
 });
 
