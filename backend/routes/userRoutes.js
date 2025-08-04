@@ -2,7 +2,7 @@
 import express from "express";
 import {getUsers} from "../controllers/userController.js"; // Import the controller function
 import { isAuthenticated} from "../middleware/auth.js"; // Import the authentication middleware
-import checkRole from "../middleware/role.js"; //import the checkrole middleware
+import {checkRole} from "../middleware/role.js"; //import the checkrole middleware
 
 // define the router
 const router = express.Router();
