@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // Global CSS Imports
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'aos/dist/aos.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Page Components
