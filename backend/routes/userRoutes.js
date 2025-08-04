@@ -14,7 +14,7 @@ router.get("/", isAuthenticated, getUsers); // Use the authentication middleware
 router.put("/:id/role", isAuthenticated,checkRole(["admin"]),updateUserRole); // Use the authentication middleware and role check
 
 //define the route to delete the user
-router.delete("/:id", isAuthenticated. checkRole(["admin"]), deleteUser)
+router.delete("/:id", isAuthenticated, checkRole(["admin"]), deleteUser)
 
 // export the router
 export default router;
