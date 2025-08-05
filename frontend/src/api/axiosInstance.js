@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL =proccess.env.BACKEND_URL
+const baseURL =process.env.BACKEND_URL
 
 // Create an Axios instance with default base UR
 const axiosInstance = axios.create({
