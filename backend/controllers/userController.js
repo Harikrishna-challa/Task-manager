@@ -9,17 +9,16 @@ import User from "../models/User.js"; // Mongoose model for the User schema
  */
 
 //get user profile
- e// GET /users - Get all users (accessible only to admin)
-router.get("/users", authenticate, isAdmin, async (req, res) => {
+ // GET /users - Get all users (accessible only to admin)
+export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "name email role"); // include 'role' field
+    const users = await User.find({}, "name email role");
     res.json({ users });
   } catch (err) {
     console.error("Failed to fetch users", err);
     res.status(500).json({ error: "Server error" });
   }
-});
-
+};
  // controller to update user role
  export const updateUserRole = async (req,res) =>{
     try{
