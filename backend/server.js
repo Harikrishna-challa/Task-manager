@@ -15,12 +15,25 @@ dotenv.config();
 const app = express();
 
 //  Proper CORS setup
+const allowedOrigins = [
+  "https://task-manager-smoky-zeta.vercel.app",
+  "http://localhost:3000", // for local dev
+];
+
 app.use(cors({
-  origin: "https://task-manager-smoky-zeta.vercel.app",
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman or curl) or allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
+
 // ➤ Parse cookies & JSON bodies
 app.use(cookieParser());
 app.use(express.json());
