@@ -9,29 +9,17 @@ import User from "../models/User.js"; // Mongoose model for the User schema
  */
 
 //get user profile
- export const getUsers = async(req, res) =>{
-    try {
-        // Query MongoDB for all users, but only select the fields we need
-        // _id is included by default; we explicitly include name & email
-        const users = await User.find().select("_id name email");
-        if (!users) {
-            return res.status(404).json({
-                success : false,
-                message :"User not found"
-            })
-        }
-        res.status(200).json({
-            success:true,
-            users, // 2️ Return the list of users
-        }) //  Return success response with user list
-    }catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "Failed to retrieve user profile"
-        }) // 3️ On error, send 500 with message
+ e// GET /users - Get all users (accessible only to admin)
+router.get("/users", authenticate, isAdmin, async (req, res) => {
+  try {
+    const users = await User.find({}, "name email role"); // include 'role' field
+    res.json({ users });
+  } catch (err) {
+    console.error("Failed to fetch users", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 
-    }
-}
  // controller to update user role
  export const updateUserRole = async (req,res) =>{
     try{
@@ -78,17 +66,5 @@ import User from "../models/User.js"; // Mongoose model for the User schema
         }
 
         // get current user Id
-        export const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find().select("-password");
-    res.status(200).json({
-      users,
-      currentUserId: req.user.id, // send logged-in admin ID
-    });
-  } catch (error) {
-    console.error("Fetch users error:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-};
-
+       
     

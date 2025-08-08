@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const baseURL =process.env.BACKEND_URL
+const baseURL =process.env.REACT_APP_BACKEND_URL;
 
 // Create an Axios instance with default base UR
 const axiosInstance = axios.create({
-  baseURL:baseURL, // Make sure it's baseURL
+  baseURL:baseURL+"/api", // Make sure it's baseURL
   withCredentials: true, //  Send cookies or Authorization headers
 });
 

@@ -1,86 +1,110 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// src/pages/Register.js
+import React, { useState } from "react";
 import axios from "../api/axiosInstance";
-import AOS from "aos";
+import { useNavigate, Link } from "react-router-dom";
 
-function Register() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // default role
+  const [adminKey, setAdminKey] = useState(""); // only used if role is admin
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    AOS.init({ duration: 800 });
-  }, []);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
     try {
-      await axios.post("/auth/register", formData);
-      navigate("/login");
-    } catch (error) {
-      setError(error.response?.data?.message || "Registration failed");
+      const payload = { name, email, password, role };
+      if (role === "admin") {
+        payload.adminKey = adminKey;
+      }
+
+      const response = await axios.post("/auth/register", payload);
+
+      if (response.status === 201) {
+        alert("Registration successful!");
+        navigate("/login");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center vh-100"
-      style={{ background: "linear-gradient(135deg, #f0f4ff, #ffffff)" }}
-    >
-      <div className="card p-4 shadow rounded-4" style={{ minWidth: "350px" }} data-aos="zoom-in">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h3 className="mb-0">
-            <i className="bi bi-person-plus-fill me-2 text-success"></i>
-            Register
-          </h3>
-          <Link to="/login" className="btn btn-outline-success btn-sm">
-            Login
-          </Link>
-        </div>
+    <div className="container mt-5" data-aos="fade-up">
+      <h2 className="text-center mb-4">Register</h2>
 
-        <form onSubmit={handleRegister}>
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      <form onSubmit={handleRegister} className="col-md-6 offset-md-3">
+        <div className="form-group mb-3">
+          <label>Name</label>
           <input
             type="text"
-            name="name"
-            placeholder="Name"
-            className="form-control mb-3"
-            onChange={handleChange}
+            className="form-control"
             required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
+        </div>
+
+        <div className="form-group mb-3">
+          <label>Email</label>
           <input
             type="email"
-            name="email"
-            placeholder="Email"
-            className="form-control mb-3"
-            onChange={handleChange}
+            className="form-control"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
+        </div>
+
+        <div className="form-group mb-3">
+          <label>Password</label>
           <input
             type="password"
-            name="password"
-            placeholder="Password"
-            className="form-control mb-3"
-            onChange={handleChange}
+            className="form-control"
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="btn btn-success w-100">
-            Register
-          </button>
-        </form>
+        </div>
 
-        {error && (
-          <div className="alert alert-danger mt-3 mb-0 text-center py-2">
-            {error}
+        <div className="form-group mb-3">
+          <label>Role</label>
+          <select
+            className="form-select"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        {role === "admin" && (
+          <div className="form-group mb-3">
+            <label>Admin Key</label>
+            <input
+              type="password"
+              className="form-control"
+              required
+              value={adminKey}
+              onChange={(e) => setAdminKey(e.target.value)}
+            />
           </div>
         )}
-      </div>
+
+        <button type="submit" className="btn btn-primary w-100">Register</button>
+
+        <p className="mt-3 text-center">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+      </form>
     </div>
   );
-}
+};
 
 export default Register;

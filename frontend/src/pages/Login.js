@@ -29,10 +29,8 @@ function Login() {
     setError(""); // Clear previous errors
     try {
       // Sending POST request to login
-      const response = await axios.post("/auth/login", formData, {
-        withCredentials: true, // To handle cookie-based sessions (if needed)
-      });
-
+      const response = await axios.post("/auth/login", formData);
+     
       if (response.data.token) {
         localStorage.setItem("token", response.data.token); // Store token in localStorage (or sessionStorage)
         navigate("/dashboard"); // Redirect to Dashboard on successful login

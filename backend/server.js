@@ -16,7 +16,7 @@ const app = express();
 
 //  Proper CORS setup
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://task-manager-smoky-zeta.vercel.app",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
